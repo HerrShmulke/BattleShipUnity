@@ -22,9 +22,9 @@ public class Character : MonoBehaviour
     private SoundManager _soundManager;
     private Pool _laserPool;
 
-    private bool _forward = false;
-    private bool _brake = false;
-    private float _rotate = 0;
+    private int _advance = 0;
+    private int _surf = 0;
+    private int _rotation = 0;
     private float _reload;
 
     /// <param name="velocity">Ускорение</param>
@@ -55,9 +55,6 @@ public class Character : MonoBehaviour
         RotateKeyHandler();
         MoveKeyHandler();
 
-        if (Input.GetKey(KeyCode.Space)) _brake = true;
-        else _brake = false;
-
         if (Input.GetMouseButton(0) && _reload >= SpaceShipData.ReloadTime) Shoot();
 
         if (_reload < SpaceShipData.ReloadTime)
@@ -76,26 +73,41 @@ public class Character : MonoBehaviour
 
     private void RotateKeyHandler()
     {
-        if (Input.GetKey(KeyCode.A)) _rotate = 1;
-        else if (Input.GetKey(KeyCode.D)) _rotate = -1;
-        else _rotate = 0;
+        if (Input.GetKey(KeyCode.Q)) _rotation = 1;
+        else if (Input.GetKey(KeyCode.E)) _rotation = -1;
+        else _rotation = 0;
     }
 
     private void Rotate()
     {
-        if (_rotate != 0)
+        if (_rotation != 0)
         {
             _rigidbody2d.angularVelocity = 0;
-            _rigidbody2d.rotation += (RotateSpeed * 10 * Time.fixedDeltaTime * _rotate);
+            _rigidbody2d.rotation += (RotateSpeed * 10 * Time.fixedDeltaTime * _rotation);
         }
     }
 
     private void MoveKeyHandler()
     {
-        
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.W)) _advance = 1;
+        else if (Input.GetKey(KeyCode.S)) _advance = -1;
+        else _advance = 0;
+
+        if (Input.GetKey(KeyCode.A)) _rotation = 1;
+        else if (Input.GetKey(KeyCode.D)) _rotation = -1;
+        else _rotation = 0;
+
+        if (Input.GetKey(KeyCode.Q)) _surf = -1;
+        else if (Input.GetKey(KeyCode.E)) _surf = 1;
+        else _surf = 0;
+    }
+
+    private void Move()
+    {
+        if (_advance != 0 || _surf != 0)
         {
-            _forward = true;
+            _rigidbody2d.AddForce(Time.fixedDeltaTime * _transform.up * _advance * SpaceShipData.Speed, ForceMode2D.Impulse);
+            _rigidbody2d.AddForce(Time.fixedDeltaTime * _transform.right * _surf * SpaceShipData.Speed, ForceMode2D.Impulse);
 
             if (!_soundManager.IsPlaying("Engine"))
                 _soundManager.Play("Engine");
@@ -103,34 +115,20 @@ public class Character : MonoBehaviour
             if (!EngineFire.activeInHierarchy)
                 EngineFire.SetActive(true);
         }
-        else
+        else if (_advance == 0 && _surf == 0)
         {
-            _forward = false;
-
+            _rigidbody2d.AddForce(-_rigidbody2d.velocity * Time.fixedDeltaTime * SpaceShipData.Speed, ForceMode2D.Impulse);
             if (_soundManager.IsPlaying("Engine"))
                 _soundManager.Stop("Engine");
 
             if (EngineFire.activeInHierarchy)
                 EngineFire.SetActive(false);
         }
-    }
 
-    private void Move()
-    {
-        if (_brake && _rigidbody2d.velocity != Vector2.zero)
-        {
-            _rigidbody2d.AddForce(Braking() * Time.deltaTime * SpaceShipData.Speed, ForceMode2D.Impulse);
-            OnMove?.Invoke(_rigidbody2d.velocity);
-        }
-        else if (_forward)
-        {
-            Vector2 velocity = _rigidbody2d.velocity + (Vector2)_transform.up * Time.fixedDeltaTime * SpaceShipData.Speed;
+        _rigidbody2d.angularVelocity = 0;
+        _rigidbody2d.velocity = Vector2.ClampMagnitude(_rigidbody2d.velocity, MaxSpeed);
 
-            if (velocity.magnitude <= MaxSpeed)
-                _rigidbody2d.AddForce(_transform.up * Time.fixedDeltaTime * SpaceShipData.Speed, ForceMode2D.Impulse);
-
-            OnMove?.Invoke(_rigidbody2d.velocity);
-        }
+        OnMove?.Invoke(_rigidbody2d.velocity);
     }
 
     private void Shoot()
