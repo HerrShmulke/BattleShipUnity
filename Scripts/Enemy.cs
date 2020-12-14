@@ -7,9 +7,7 @@ public class Enemy : MonoBehaviour
 {
     [Header("Objects")]
     public GameObject LaserPrefab;
-    public GameObject EngineFire;
     public GameObject Player;
-    public GameObject TargetPoint;
     public ShipData SpaceShipData;
 
     [Header("Speed")]
@@ -17,25 +15,28 @@ public class Enemy : MonoBehaviour
     public float MaxSpeed;
 
     private Transform _playerTransform;
-    private Rigidbody2D _playerRigidbody2D;
     private Transform _transform;
     private Rigidbody2D _rigidbody2D;
+
+    private Vector3 _moveDirection;
+
+    private float _radius = 10;
+    private float _angle = 0;
 
     void Start()
     {
         _playerTransform = Player.transform;
-        _playerRigidbody2D = Player.GetComponent<Rigidbody2D>();
         _transform = transform;
         _rigidbody2D = GetComponent<Rigidbody2D>();
     }
 
     void Update()
     {
-        Vector3 moveDirection = _playerTransform.position - _transform.position;
+        _moveDirection = _playerTransform.position - _transform.position;
 
-        if (moveDirection != Vector3.zero)
+        if (_moveDirection != Vector3.zero)
         {
-            float angle = Vector3.SignedAngle(-moveDirection, _transform.up, Vector3.forward);
+            float angle = Vector3.SignedAngle(-_moveDirection, _transform.up, Vector3.forward);
             float rotateAngle = angle / Mathf.Abs(angle) * 10 * RotateSpeed * Time.deltaTime;
 
             angle = Mathf.Round(angle);
@@ -56,18 +57,23 @@ public class Enemy : MonoBehaviour
     private void Move()
     {
         float distance = Vector3.Distance(_playerTransform.position, _transform.position);
-        float tempMaxSpeed = MaxSpeed;
 
-        if (distance < 3)
-            tempMaxSpeed -= 1;
-        else if (distance < 6)
-            tempMaxSpeed = MaxSpeed;
-        else if (distance < 15)
-            tempMaxSpeed += 0.4f;
+        _angle += Time.fixedDeltaTime;
+
+        if (distance < _radius)
+        {
+            _rigidbody2D.AddForce(_moveDirection.normalized * Time.fixedDeltaTime * SpaceShipData.Speed, ForceMode2D.Impulse);
+            _rigidbody2D.velocity = Vector2.ClampMagnitude(_rigidbody2D.velocity, MaxSpeed);
+        }
         else
-            tempMaxSpeed += 1.5f;
-        
+        {
+            float x = Mathf.Cos(_angle) * _radius + Player.transform.position.x;
+            float y = Mathf.Sin(_angle) * _radius + Player.transform.position.y;
 
-        _rigidbody2D.velocity = _transform.up * Time.fixedDeltaTime * tempMaxSpeed * 100;
+            Vector2 newDirection = new Vector2(x, y) - (Vector2)transform.position;
+
+            _rigidbody2D.AddForce(newDirection.normalized * Time.fixedDeltaTime * SpaceShipData.Speed, ForceMode2D.Impulse);
+            _rigidbody2D.velocity = Vector2.ClampMagnitude(_rigidbody2D.velocity, MaxSpeed);
+        }
     }
 }

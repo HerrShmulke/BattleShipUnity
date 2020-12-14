@@ -52,8 +52,8 @@ public class Character : MonoBehaviour
 
     private void Update()
     {
-        RotateKeyHandler();
-        MoveKeyHandler();
+        RotateKeyListener();
+        MoveKeyListener();
 
         if (Input.GetMouseButton(0) && _reload >= SpaceShipData.ReloadTime) Shoot();
 
@@ -71,7 +71,7 @@ public class Character : MonoBehaviour
         _material.mainTextureOffset += _rigidbody2d.velocity / 1000;
     }
 
-    private void RotateKeyHandler()
+    private void RotateKeyListener()
     {
         if (Input.GetKey(KeyCode.Q)) _rotation = 1;
         else if (Input.GetKey(KeyCode.E)) _rotation = -1;
@@ -87,7 +87,7 @@ public class Character : MonoBehaviour
         }
     }
 
-    private void MoveKeyHandler()
+    private void MoveKeyListener()
     {
         if (Input.GetKey(KeyCode.W)) _advance = 1;
         else if (Input.GetKey(KeyCode.S)) _advance = -1;
@@ -142,18 +142,5 @@ public class Character : MonoBehaviour
         laserTransform.position = _transform.position;
         laserTransform.transform.rotation = _transform.rotation;
         laser.SetActive(true);
-    }
-
-    private Vector2 Braking()
-    {
-        Vector2 velocity = _rigidbody2d.velocity.normalized;
-
-        if (velocity.x != 0)
-            velocity.x /= Mathf.Abs(velocity.x);
-
-        if (velocity.y != 0)
-            velocity.y /= Mathf.Abs(velocity.y);
-
-        return -velocity;
     }
 }
