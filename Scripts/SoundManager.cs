@@ -40,4 +40,14 @@ public class SoundManager : MonoBehaviour
     {
         _sounds[name.ToUpper()].source.Stop();
     }
+
+    public void SetVolume(string name, float volume)
+    {
+        _sounds[name.ToUpper()].source.volume = volume;
+    }
+
+    public float GetVolume(string name)
+    {
+        return _sounds[name.ToUpper()].source.volume;
+    }
 }

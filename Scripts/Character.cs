@@ -48,6 +48,8 @@ public class Character : MonoBehaviour
         _soundManager = GetComponent<SoundManager>();
 
         EngineFire.transform.localPosition = SpaceShipData.FirePosition;
+        _soundManager.Play("Engine");
+
     }
 
     private void Update()
@@ -109,8 +111,8 @@ public class Character : MonoBehaviour
             _rigidbody2d.AddForce(Time.fixedDeltaTime * _transform.up * _advance * SpaceShipData.Speed, ForceMode2D.Impulse);
             _rigidbody2d.AddForce(Time.fixedDeltaTime * _transform.right * _surf * SpaceShipData.Speed, ForceMode2D.Impulse);
 
-            if (!_soundManager.IsPlaying("Engine"))
-                _soundManager.Play("Engine");
+            if (_soundManager.GetVolume("Engine") != 0.2f)
+                _soundManager.SetVolume("Engine", 0.2f);
 
             if (!EngineFire.activeInHierarchy)
                 EngineFire.SetActive(true);
@@ -118,8 +120,8 @@ public class Character : MonoBehaviour
         else if (_advance == 0 && _surf == 0)
         {
             _rigidbody2d.AddForce(-_rigidbody2d.velocity * Time.fixedDeltaTime * SpaceShipData.Speed, ForceMode2D.Impulse);
-            if (_soundManager.IsPlaying("Engine"))
-                _soundManager.Stop("Engine");
+            if (_soundManager.GetVolume("Engine") != 0.05f)
+                _soundManager.SetVolume("Engine", 0.05f);
 
             if (EngineFire.activeInHierarchy)
                 EngineFire.SetActive(false);
