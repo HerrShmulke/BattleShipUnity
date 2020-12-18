@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: 2_Ship
   m_EditorClassIdentifier: 
   ShipSprite: {fileID: 21300000, guid: 556fa4ee2f1647542846fb3175e37083, type: 3}
+  FirePosition: {x: 0, y: -0.54}
   Speed: 3
   ReloadTime: 2
-  FirePosition: {x: 0, y: -0.54}
+  MaxHealth: 0

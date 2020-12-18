@@ -7,4 +7,5 @@ public class LaserData : ScriptableObject
 {
     public Sprite LaserSprite;
     public float Speed;
+    public int Damage;
 }

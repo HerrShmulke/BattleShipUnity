@@ -10,4 +10,5 @@ public class ShipData : ScriptableObject
 
     public float Speed;
     public float ReloadTime;
+    public int MaxHealth;
 }

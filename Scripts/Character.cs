@@ -7,14 +7,13 @@ using UnityEngine.Events;
 public class Character : MonoBehaviour
 {
     [Header("Objects")]
-    public GameObject LaserPrefab;
-    public GameObject Background;
-    public GameObject EngineFire;
-    public ShipData SpaceShipData;
+    [SerializeField] private GameObject Background = null;
+    [SerializeField] private GameObject EngineFire = null;
+    [SerializeField] private ShipData SpaceShipData = null;
 
     [Header("Speed")]
-    public float RotateSpeed;
-    public float MaxSpeed;
+    [SerializeField] private float RotateSpeed = 0;
+    [SerializeField] private float MaxSpeed = 0;
 
     private Rigidbody2D _rigidbody2d;
     private Transform _transform;
