@@ -16,4 +16,4 @@ MonoBehaviour:
   FirePosition: {x: 0, y: -0.54}
   Speed: 3
   ReloadTime: 2
-  MaxHealth: 0
+  MaxHealth: 100
