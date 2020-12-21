@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -45,21 +44,26 @@ public class Player : SpaceShip
     {
         base.Update();
 
-        if (!_isReload && _isFire) Fire();
+        if (!_isReload && _isFire) Shoot();
     }
 
-    private void Fire()
+    private void Shoot()
     {
         _soundManager.Play("Shoot");
-        _isReload = true;
 
         GameObject laser = _laserPool.GetPooledObject();
+
+        if (laser == null) return;
+
         Transform laserTransform = laser.transform;
 
         laserTransform.position = _transform.position;
         laserTransform.transform.rotation = _transform.rotation;
+        
+        laser.GetComponent<Laser>().OwnerTag = _gameObject.tag;
         laser.SetActive(true);
 
+        _isReload = true;
         StartCoroutine(Reload());
     }
 

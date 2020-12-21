@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LaserSprite: {fileID: 21300000, guid: 0fa634da930409b419fea20850f74e79, type: 3}
   Speed: 20
+  Damage: 50

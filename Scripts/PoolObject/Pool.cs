@@ -35,6 +35,7 @@ public class Pool
             if (!_objectList[i].activeInHierarchy)
             {
                 _objectList[i].SetActive(true);
+                
                 return _objectList[i].GetComponent<T>();
             }
         }

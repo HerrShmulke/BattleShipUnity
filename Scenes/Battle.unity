@@ -300,12 +300,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &651849154 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5226674240409692655, guid: 4688886029bb3064085ab3b7dd594d06, type: 3}
+  m_PrefabInstance: {fileID: 1575280888}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &651849155 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8107783928749287873, guid: 4688886029bb3064085ab3b7dd594d06, type: 3}
   m_PrefabInstance: {fileID: 1575280888}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 651849154}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b58f7725cbf12864889bf1d3b10ec2c3, type: 3}
@@ -822,14 +827,15 @@ GameObject:
   - component: {fileID: 2100978639}
   - component: {fileID: 2100978642}
   - component: {fileID: 2100978643}
+  - component: {fileID: 2100978644}
   - component: {fileID: 2100978641}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &2100978639
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -905,14 +911,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2100978638}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d345d83e80e5eb40ad0356bea3f81b9, type: 3}
+  m_Script: {fileID: 11500000, guid: d76a8c608312fe44db23af5df5f10c1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LaserPrefab: {fileID: 0}
-  Player: {fileID: 0}
-  SpaceShipData: {fileID: 11400000, guid: ad978b3c18b5a45449d5f36fe3b62c40, type: 2}
-  RotateSpeed: 7
-  MaxSpeed: 5
+  _spaceShipData: {fileID: 11400000, guid: ad978b3c18b5a45449d5f36fe3b62c40, type: 2}
+  _engineFire: {fileID: 997577623}
+  _rotateSpeed: 4
+  _maxSpeed: 10
+  _player: {fileID: 651849154}
 --- !u!50 &2100978642
 Rigidbody2D:
   serializedVersion: 4
@@ -987,3 +993,28 @@ PolygonCollider2D:
       - {x: -0.065, y: -0.26}
       - {x: 0.145, y: -0.39999998}
       - {x: 0.24499999, y: -0.42}
+--- !u!114 &2100978644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2100978638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4273ca0108b547f4e9fc7c4b795c79c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Sounds:
+  - Name: Shoot
+    Clip: {fileID: 8300000, guid: 0b8dc904bb541c846a88b53d13c44e91, type: 3}
+    Loop: 0
+    Volume: 1
+    Pitch: 1
+    source: {fileID: 0}
+  - Name: Engine
+    Clip: {fileID: 8300000, guid: 58c465d9c86cfda48bf55cdc158c87df, type: 3}
+    Loop: 1
+    Volume: 0.204
+    Pitch: 1
+    source: {fileID: 0}

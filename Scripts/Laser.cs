@@ -6,9 +6,10 @@ using UnityEngine;
 public class Laser : MonoBehaviour
 {
     public LaserData laserData;
+    public string OwnerTag;
+
 
     private SpriteRenderer _spriteRenderer;
-    private GameObject _gameObject;
     private int _check = 0;
 
     private void OnEnable()
@@ -20,8 +21,6 @@ public class Laser : MonoBehaviour
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _spriteRenderer.sprite = laserData.LaserSprite;
-
-        _gameObject = gameObject;
     }
 
     private void Update()
@@ -38,6 +37,18 @@ public class Laser : MonoBehaviour
         else
         {
             ++_check;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == OwnerTag)
+        {
+            return;
+        }
+        else if (collision.tag == "Enemy")
+        {
+            collision.GetComponent<Enemy>().Health -= laserData.Damage;
         }
     }
 }
